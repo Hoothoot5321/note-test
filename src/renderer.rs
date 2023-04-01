@@ -1,5 +1,6 @@
 use crate::{
     colour_holder::ColourHolder,
+    states::States,
     traits::{CursorC, LineC},
 };
 use crossterm::{
@@ -65,7 +66,8 @@ impl Renderer {
     ) -> Result<bool, exitfailure::ExitFailure> {
         if lines.len() > 0 {
             let mut return_bool = true;
-            let mut header_line = (&lines[0]).to_string();
+            let header = (&lines[0]).to_string();
+            let mut header_line = (&header).to_string();
             let mut status_line;
             let linus;
 
@@ -81,7 +83,7 @@ impl Renderer {
 
                 linus = vec![header_line, status_line];
             } else {
-                linus = vec![header_line]
+                linus = vec![header]
             }
 
             linus.iter().for_each(|line| {
@@ -108,8 +110,10 @@ impl Renderer {
         lines_controller: &L,
         colour_holder: &ColourHolder,
         cursor_controller: &C,
+        state: &States,
     ) -> Result<bool, exitfailure::ExitFailure> {
         queue!(stdout, cursor::MoveTo(0, 0))?;
+        let y;
 
         self.render_header(stdout, &lines_controller.get_header(), colour_holder)?;
 
@@ -120,14 +124,20 @@ impl Renderer {
             cursor_controller,
         )?;
 
+        match state {
+            States::Setup => {
+                y = 0;
+            }
+            States::Editor => {
+                y = cursor_controller.get_y() + cursor_controller.get_min_height();
+            }
+        }
+
         queue!(
             stdout,
             style::ResetColor,
             terminal::Clear(terminal::ClearType::UntilNewLine),
-            cursor::MoveTo(
-                (cursor_controller.get_x()) as u16,
-                (cursor_controller.get_y() + cursor_controller.get_min_height()) as u16
-            )
+            cursor::MoveTo((cursor_controller.get_x()) as u16, y as u16)
         )?;
 
         stdout.flush()?;

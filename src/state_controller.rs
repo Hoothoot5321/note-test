@@ -51,6 +51,7 @@ impl StateController {
             lines_controller,
             &self.colour_holder,
             cursor_controller,
+            &self.state,
         )?;
 
         // if self.pass > 1 {
@@ -203,6 +204,36 @@ impl StateController {
                 }
 
                 queue!(io::stdout(), terminal::Clear(terminal::ClearType::All)).unwrap();
+                return Ok(true);
+            }
+
+            KeyEvent {
+                code: KeyCode::Char('n'),
+                modifiers: KeyModifiers::CONTROL,
+                ..
+            } => {
+                match self.state {
+                    States::Setup => {
+                        self.state = States::Editor;
+                        if !lines_controller
+                            .get_spec()
+                            .contains(&lines_controller.get_header()[0])
+                        {
+                            self.supabase
+                                .post_text(
+                                    &self.table,
+                                    (&lines_controller.get_header()[0]).to_string(),
+                                    "".to_string(),
+                                )
+                                .await?;
+                            alt_line.change_title((&lines_controller.get_header()[0]).to_string());
+                            alt_line.change_lines(vec!["".to_string()]);
+                            alt_cursor.reset(alt_line.get_header());
+                        }
+                    }
+                    States::Editor => {}
+                }
+
                 return Ok(true);
             }
 

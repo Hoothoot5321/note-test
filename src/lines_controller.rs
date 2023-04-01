@@ -64,6 +64,9 @@ impl LineC for LinesController {
         &self.lines
     }
 
+    fn get_spec(&self) -> &Vec<String> {
+        &self.lines
+    }
     fn get_header(&self) -> &Vec<String> {
         &self.header
     }

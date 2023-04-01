@@ -52,7 +52,7 @@ async fn main() -> Result<(), exitfailure::ExitFailure> {
         .map(|header| (&header.header).to_string())
         .collect();
 
-    let mut base_line = BaseLineController::new(header_list, vec![]);
+    let mut base_line = BaseLineController::new(header_list, vec!["".to_string()]);
     let mut base_cursor = BaseCusorController::new(base_line.get_header().len());
 
     let colour_holder = ColourHolder {

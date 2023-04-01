@@ -18,6 +18,7 @@ pub trait CursorC {
 pub trait LineC {
     fn get_lines(&self) -> &Vec<String>;
     fn get_header(&self) -> &Vec<String>;
+    fn get_spec(&self) -> &Vec<String>;
     fn change_lines(&mut self, lines: Vec<String>);
     fn change_title(&mut self, title: String);
     fn change_status(&mut self, status: String);
