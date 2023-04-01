@@ -188,21 +188,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5827cebf4670468b8772dd191856768aedcb1b0278a04f989f7766351917b9dc"
 
 [[package]]
-name = "crosstem-template"
-version = "0.1.0"
-dependencies = [
- "clap",
- "crossterm",
- "dotenv",
- "exitfailure",
- "reqwest",
- "serde",
- "serde_derive",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "crossterm"
 version = "0.25.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -654,6 +639,21 @@ dependencies = [
  "security-framework",
  "security-framework-sys",
  "tempfile",
+]
+
+[[package]]
+name = "notes"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "crossterm",
+ "dotenv",
+ "exitfailure",
+ "reqwest",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]

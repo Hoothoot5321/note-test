@@ -159,8 +159,8 @@ impl StateController {
                                 &lines_controller.get_lines()[cursor_controller.get_y()],
                             )
                             .await?;
-                        let content = (&header_list[0].content).to_string();
-
+                        let mut content = (&header_list[0].content).to_string();
+                        content.pop();
                         let final_content: Vec<String> = content
                             .split("\n")
                             .into_iter()
